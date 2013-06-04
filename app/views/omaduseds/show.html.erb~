@@ -141,5 +141,5 @@
 </p>
 
 
-<!--<%= link_to 'Edit', edit_omadused_path(@omadused) %> -->|
+<%= link_to 'Edit', edit_omadused_path(@omadused) %> |
 <%= link_to 'Back', omaduseds_path %>

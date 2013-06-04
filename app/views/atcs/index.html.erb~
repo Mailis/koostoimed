@@ -15,9 +15,9 @@
     <td><%= atc.code %></td>
     <td><%= atc.nimetus_est %></td>
     <td><%= atc.nimetus_eng %></td>
-    <!--<td><%= link_to 'Show', atc %></td>-->
-    <!--<td><%= link_to 'Edit', edit_atc_path(atc) %></td>-->
-    <!--<td><%= link_to 'Destroy', atc, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+    <td><%= link_to 'Show', atc %></td>
+    <td><%= link_to 'Edit', edit_atc_path(atc) %></td>
+    <td><%= link_to 'Destroy', atc, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
