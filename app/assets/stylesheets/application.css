@@ -74,11 +74,17 @@
    text-decoration: underline;
  }
  #otsing_pealkiri{
-   color: #0052CC;
    font-size: 3em;
    margin-top: 8px;
    margin-bottom: 8px;
    margin-left: -3px;
+   text-decoration: none;
+   cursor: pointer;
+ }
+ #otsing_pealkiri_a{
+   text-decoration: none;
+   cursor: pointer;
+   color: #0052CC;
  }
  #btn_kuvakoostoime{
    color: white;

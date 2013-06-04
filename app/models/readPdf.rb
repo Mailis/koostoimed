@@ -38,10 +38,12 @@ private
     reader.pages.each do |page|
       pagetext = page.text.strip
       #eemalda lk numbrid, kui on
-      if !(pagetext =~ /\d{4}$/) #kui lehekylje neli viimast karakterit on digitid, siis ei eemalda: see voib olla aastaarv
+      #kui lehekylje neli viimast karakterit on digitid, siis ei eemalda: see voib olla aastaarv
+      #kui lehekylje kõige viimane 1 karakter on digit, siis eemalda: see on vist lk nr
+      if !(pagetext =~ /\d{4}$/) && (pagetext =~ /\d{1}$/)
          pagetext = pagetext[0..-2]
       end      
-      pdf_files.concat(pagetext + "\n\n")# +\n\n: uus lehekylg v6ib alata uue peatykiga, peatykke splititakse kahe reavahetuse jargi
+      pdf_files.concat(pagetext  + "\n\n")# +\n\n: uus lehekylg v6ib alata uue peatykiga, peatykke splititakse kahe reavahetuse jargi
     end#all pages in one text 
   end#method
   
@@ -108,9 +110,9 @@ private
          end
         @hash_array[key] = ""
       else
-        #if (!(line.start_with?("4. ")) && !(line.start_with?("5. ")) && !(line.start_with?("6. ") ) )
+        if (!(line.start_with?("4. ")) && !(line.start_with?("5. ")) && !(line.start_with?("6. ") ) )
           @hash_array[key] += line.gsub(/\n/, " ") if !key.empty?
-        #end
+        end
       end
     end 
   end
@@ -128,12 +130,12 @@ private
     headersFromPdf = myPDFarray.select {|a| looks_like_title?(a) } #4.5 on alles
     #ara vota pealkirjadeks ridu, kus rea hulgas on numbrite 
     # vahel kaldkriips(dd.mm.yyyy/dd.mm.yyyy) voi punktiga eraldatud kuupaev(dd.mm.yyyy)
-    headersFromPdf.select {|s| !(s =~ /\d\/\d/) && !(s =~ /\d{2}\.\d{2}\.\d{4}/)} 
+    headersFromPdf = headersFromPdf.select {|s| !(s =~ /\d\/\d/) && !(s =~ /\d{2}\.\d{2}\.\d{4}/)} 
     #headersFromPdf.select {|s|   ( (pealkirjade_numbrid.any? { |w| s[0..4].include? w } )  &&  !(s =~ /\d\/\d/) )   } 
   end
   
   def looks_like_title?(str)
-        str =~ /^\d{1,2}\.((\s|\w)|(\d{1,2}(\s|\w)))/
+        str =~ /^\d{1,2}\.((\s|\w)|(\d{1,2}(\s|\w)))/ && !(str =~ /(^5\.\s)|(^4\.\s)|(^6\.\s)/)
   end
    
 end#class

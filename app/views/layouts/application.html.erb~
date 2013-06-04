@@ -7,7 +7,33 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div id="pealdis">  
+  <p id ="otsing_pealkiri" class="floatleft"><a id ="otsing_pealkiri_a" href="/">OTSING</a></p>
+  <div class="floatleft"> 
+    <%= submit_tag "VAATA KOOSTOIMEID", :type => 'button', :id => 'btn_kuvakoostoime'  %>
+  </div>
+  <div class="floatright_h1"> 
+    <h1>Ravimite omadused</h1>
+    <div class="h4">Andmed on pärit <a href="http://193.40.10.165/register/register.php">Eesti Ravimiregistri</a> pdf-dest</div>
+  </div>
+  <div class="clearboth"></div>
+  <div> 
+  <span>
+    <%= text_field_tag 'atcs', nil, :class => 'textinput', :placeholder => 'ATC kood *', :required => true %>
+  </span> 
+  <span>
+    <%= text_field_tag 'est', nil, :class => 'textinput', :placeholder => 'nimetus eesti keeles'  %>
+  </span> 
+  <span>
+    <%= text_field_tag 'eng', nil, :class => 'textinput', :placeholder => 'nimetus inglise keeles'  %>
+  </span>   
+</div>  
 
+</div>
+
+
+
+<div id="update-atc"></div>
 <%= yield %>
 
 </body>

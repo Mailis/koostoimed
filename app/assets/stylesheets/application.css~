@@ -23,12 +23,10 @@
    max-width: 600px;
  }
  .koostoimed_container{
- 
    max-width: 600px;
    float: left;
  }
  .eitea{
-   max-width: 700px;
    float: left;
  }
  .t_koostoimed, .muu{
@@ -81,6 +79,12 @@
    margin-top: 8px;
    margin-bottom: 8px;
    margin-left: -3px;
+   text-decoration: none;
+   cursor: pointer;
+ }
+ #otsing_pealkiri_a{
+   text-decoration: none;
+   cursor: pointer;
  }
  #btn_kuvakoostoime{
    color: white;

@@ -37,6 +37,7 @@ class Omadused < ActiveRecord::Base
   def title(key)#seda kasutab kuva.html
     TITLES[key].to_s
   end  
+  
   def self.fetch(atc)
     # Siit alustatakse sama teed, mis täna homecontroller #kuva meetodis.
     # Kui vastava koodiga Omadust ei leita tagastame nil'i, 
@@ -67,7 +68,7 @@ class Omadused < ActiveRecord::Base
            vordle_db_tabeli_kuupaevaga
          end
        end 
-         @toimeaine_info = Omadused.where("atc like ?", @atc.concat("%") )
+         @toimeaine_info = Omadused.where("atc like ?", @atc.concat("%") ).order(:atc)
      end 
          @test = {:toimea => @toimeaine_info, :tabeliRidadeArv => @finalrows.length, :errror => rendertext}
   end
@@ -79,6 +80,7 @@ class Omadused < ActiveRecord::Base
     require 'getTable.rb'
     require 'readPdf.rb'  
   end
+  
   #lisa ravimite omaduste tabelisse uued andmed
   def self.lisa_uus_omadus    
     @finalrows.each do |rowhash|

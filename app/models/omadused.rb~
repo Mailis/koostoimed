@@ -4,6 +4,39 @@ class Omadused < ActiveRecord::Base
  validates :atc,  :presence => true
  validates :spc, :uniqueness => true
   attr_accessible :KOOSTIS, :MYYGILOA_HOIDJA, :MYYGILOA_KUUPAEV, :MYYGILOA_NUMBER, :RAVIMPREPARAADI_NIMETUS, :RAVIMVORM, :TEKSTI_LABIVAATAMISE_KUUPAEV, :abiained, :annustamine, :atc, :farmakodynaamilised, :farmakokineetilised, :havitamine, :hoiatused, :kolblikkusaeg, :koostoimed, :korvaltoimed, :naidustused, :pakendi_iseloomustus, :prekliinilised, :rasedus, :reaktsioonikiirus, :sailitamine, :sobimatus, :spc, :toimeaine, :vastunaidustused, :yleannustamine
+ TITLES = {:toimeaine  =>  'Toimeaine' ,
+:atc  =>  'ATC kood' ,
+:spc  =>  'SPC' ,
+:RAVIMPREPARAADI_NIMETUS  =>  '1. RAVIMPREPARAADI NIMETUS' ,
+:KOOSTIS  =>  '2. KVALITATIIVNE JA KVANTITATIIVNE KOOSTIS' ,
+:RAVIMVORM  =>  '3. RAVIMVORM' ,
+:naidustused  =>  '4.1 Näidustused (4. KLIINILISED ANDMED)' ,
+:annustamine  =>  '4.2 Annustamine ja manustamisviis (4. KLIINILISED ANDMED)' ,
+:vastunaidustused  =>  '4.3 Vastunäidustused (4. KLIINILISED ANDMED)' ,
+:hoiatused  =>  '4.4 Hoiatused ja ettevaatusabinõud kasutamisel (4. KLIINILISED ANDMED)' ,
+:koostoimed  =>  '4.5 Koostoimed teiste ravimitega ja muud koostoimed (4. KLIINILISED ANDMED)' ,
+:rasedus  =>  '4.6 Rasedus ja imetamine (4. KLIINILISED ANDMED)' ,
+:reaktsioonikiirus  =>  '4.7 Toime reaktsioonikiirusele (4. KLIINILISED ANDMED)' ,
+:korvaltoimed  =>  '4.8 Kõrvaltoimed (4. KLIINILISED ANDMED)' ,
+:yleannustamine  =>  '4.9 Üleannustamine (4. KLIINILISED ANDMED)' ,
+:farmakodynaamilised  =>  '5.1 Farmakodünaamilised omadused (5. FARMAKOLOOGILISED OMADUSED)' ,
+:farmakokineetilised  =>  '5.2 Farmakokineetilised omadused (5. FARMAKOLOOGILISED OMADUSED)' ,
+:prekliinilised  =>  '5.3 Prekliinilised ohutusandmed (5. FARMAKOLOOGILISED OMADUSED)' ,
+:abiained  =>  '6.1 Abiainete loetelu (6. FARMATSEUTILISED ANDMED)' ,
+:sobimatus  =>  '6.2 Sobimatus (6. FARMATSEUTILISED ANDMED)' ,
+:kolblikkusaeg  =>  '6.3 Kõlblikkusaeg (6. FARMATSEUTILISED ANDMED)' ,
+:sailitamine  =>  '6.4 Säilitamise eritingimused (6. FARMATSEUTILISED ANDMED)' ,
+:pakendi_iseloomustus  =>  '6.5 Pakendi iseloomustus ja sisu (6. FARMATSEUTILISED ANDMED)' ,
+:havitamine  =>  '6.6 Erinõuded hävitamiseks (6. FARMATSEUTILISED ANDMED)' ,
+:MYYGILOA_HOIDJA  =>  '7. MÜÜGILOA HOIDJA' ,
+:MYYGILOA_NUMBER  =>  '8. MÜÜGILOA NUMBER' ,
+:MYYGILOA_KUUPAEV  =>  '9. ESMASE MÜÜGILOA VÄLJASTAMISE / MÜÜGILOA UUENDAMISE KUUPÄEV' ,
+:TEKSTI_LABIVAATAMISE_KUUPAEV  =>  '10. TEKSTI LÄBIVAATAMISE KUUPÄEV'
+        }
+        
+  def title(key)#seda kasutab kuva.html
+    TITLES[key].to_s
+  end  
   
   def self.fetch(atc)
     # Siit alustatakse sama teed, mis täna homecontroller #kuva meetodis.
@@ -35,7 +68,7 @@ class Omadused < ActiveRecord::Base
            vordle_db_tabeli_kuupaevaga
          end
        end 
-         @toimeaine_info = Omadused.where("atc like ?", @atc.concat("%") )
+         @toimeaine_info = Omadused.where("atc like ?", @atc.concat("%") ).orderby
      end 
          @test = {:toimea => @toimeaine_info, :tabeliRidadeArv => @finalrows.length, :errror => rendertext}
   end
@@ -47,6 +80,7 @@ class Omadused < ActiveRecord::Base
     require 'getTable.rb'
     require 'readPdf.rb'  
   end
+  
   #lisa ravimite omaduste tabelisse uued andmed
   def self.lisa_uus_omadus    
     @finalrows.each do |rowhash|
