@@ -12,13 +12,13 @@ require 'open-uri'
 
 
 # ATC KOODID JA NENDE EESTI_ JA INGLISEKEELSED NIMETUSED BAASI (tehtud)
- require 'read_atc_txt.rb' 
- Atc.delete_all
- filename = "atc_hum.txt"
- a = ATChum.new filename 
- a.atc_hum.each do |rida|
-   Atc.create(rida)
- end 
+# require 'read_atc_txt.rb' 
+# Atc.delete_all
+# filename = "atc_hum.txt"
+# a = ATChum.new filename 
+# a.atc_hum.each do |rida|
+#   Atc.create(rida)
+# end 
 
 Omadused.delete_all
 # tegelikud vigadeta pealkirjad
