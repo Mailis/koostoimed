@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  code: MyString
+  nimetus_est: MyString
+  nimetus_eng: MyString
+
+two:
+  code: MyString
+  nimetus_est: MyString
+  nimetus_eng: MyString

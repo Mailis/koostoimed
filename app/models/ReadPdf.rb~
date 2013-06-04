@@ -1,0 +1,108 @@
+public
+  class ReadPdf
+  attr_accessor :tablerow, :pdf_file, :hash_array
+  
+  def initialize tablerow 
+    @tablerow= tablerow
+    @hash_array = tablerow 
+  
+    @pdf_file = ""
+  
+    @@pealkirjade_numbrid=["1.", "2.", "3.", "4.", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "5.", "5.1", "5.2", "5.3", "6.", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "7.", "8.", "9.", "10."] 
+  end
+ 
+
+  
+  def read_pdf_in
+    #io  = open(linkt_to_PDF_file)
+    io = open(@tablerow["SPC"])
+    reader = PDF::Reader.new(io) 
+     
+    reader.pages.each do |page|
+      pagetext = page.text.strip
+      #eemalda lk numbrid
+      pagetext = pagetext[0..-2]
+      @pdf_file += pagetext;
+    end#all pages in one text 
+    
+  end#method
+  
+  
+  def hashimine 
+    # iga eraldi rida läheb massiivi liikmeks
+    myPDFarray = pdf_text_lines_into_array (@pdf_file) 
+    #peaks andma ainult pealkirjad kõigist ridadest
+    noFailHeaders = no_fail_headers(myPDFarray, @@pealkirjade_numbrid)
+    #pane pealkirjad ja sisu hashi
+    
+    #myHash["Toimeaine"] = @toimeaine
+    #myHash["ATC kood"] = @atc
+    #myHash["SPC"] = @spc
+    key = ""
+    myPDFarray.each do |line|
+      if noFailHeaders.include? line
+             key = :RAVIMPREPARAADI_NIMETUS if line.start_with?("1.")
+             key = :KOOSTIS if line.start_with?("2.")
+             key = :RAVIMVORM if line.start_with?("3.")
+             key = :KLIINILISED_ANDMED if line.start_with?("4.")
+             key = :naidustused if line.start_with?("4.1")
+             key = :annustamine if line.start_with?("4.2")
+             key = :vastunaidustused if line.start_with?("4.3")
+             key = :hoiatused if line.start_with?("4.4")
+             key = :koostoimed if line.start_with?("4.5")
+             key = :rasedus if line.start_with?("4.6")
+             key = :reaktsioonikiirus if line.start_with?("4.7")
+             key = :korvaltoimed if line.start_with?("4.8")
+             key = :yleannustamine if line.start_with?("4.9")
+             key = :FARMAKOLOOGILISED_OMADUSED if line.start_with?("5.")
+             key = :farmakodynaamilised if line.start_with?("5.1")
+             key = :farmakokineetilised if line.start_with?("5.2")
+             key = :prekliinilised if line.start_with?("5.3")
+             key = :FARMATSEUTILISED_ANDMED if line.start_with?("6.")
+             key = :abiained if line.start_with?("6.1")
+             key = :sobimatus if line.start_with?("6.2")
+             key = :kolblikkusaeg if line.start_with?("6.3")
+             key = :sailitamine if line.start_with?("6.4")
+             key = :pakendi_iseloomustus if line.start_with?("6.5")
+             key = :havitamine if line.start_with?("6.6")
+             key = :MYYGILOA_HOIDJA if line.start_with?("7.")
+             key = :MYYGILOA_NUMBER if line.start_with?("8.")
+             key = :MYYGILOA_KUUPAEV if line.start_with?("9.")
+             key = :TEKSTI_LABIVAATAMISE_KUUPAEV if line.start_with?("10.")
+        @hash_array[key] = ""
+      else
+        if (!(line.start_with?("4. ")) && !(line.start_with?("5. ")) && !(line.start_with?("6. ") ) )
+          @hash_array[key] += line.gsub(/\n/, " ") if !key.empty?
+        end
+      end
+    end 
+  end
+  
+  def pdf_text_lines_into_array (my_pdf_text)
+    #split string into array, eliminate empty rows 
+    myPDFarray = my_pdf_text.split("\n\n").reject {|s| s.empty? || s.length == 1}
+    #tyhikud ära eest ja tagant
+    myPDFarray = myPDFarray.map {|a| a.lstrip + " "} #4.5 on alles
+  end
+  
+  def no_fail_headers (myPDFarray, pealkirjade_numbrid)
+    #PEALKIRJADE TÖÖTLEMIE
+    #nt pealkiri "4.5 Koostoimed teiste ravimitega ja muud koostoimed"
+    headersFromPdf = myPDFarray.select {|a| a =~ /^\d{1,2}\.((\s|\w)|(\d{1,2}(\s|\w)))/} #4.5 on alles
+    headersFromPdf.select {|s|   ( (pealkirjade_numbrid.any? { |w| s[0..4].include? w } )  &&  !(s =~ /\d\/\d/) )   }
+  end
+   
+end#class
+
+
+#require 'open-uri'
+#require 'pdf-reader'
+
+#rowhash = Hash.new
+#rowhash["Toimeaine"] = "Acidum ursodeoxycholicum"
+#rowhash["ATC kood"] = "A05AA02"
+#rowhash["SPC"] = "http://193.40.10.165/SPC/Hum/SPC_11369.pdf"
+# pedef = ReadPdf.new (rowhash)
+#  pedef.read_pdf_in
+#  pedef.hashimine
+#  puts pedef.hash_array

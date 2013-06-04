@@ -1,0 +1,61 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  toimeaine: MyString
+  atc: MyString
+  spc: MyString
+  RAVIMPREPARAADI_NIMETUS: MyText
+  KOOSTIS: MyText
+  RAVIMVORM: MyText
+  naidustused: MyText
+  annustamine: MyText
+  vastunaidustused: MyText
+  hoiatused: MyText
+  koostoimed: MyText
+  rasedus: MyText
+  reaktsioonikiirus: MyText
+  korvaltoimed: MyText
+  yleannustamine: MyText
+  farmakodynaamilised: MyText
+  farmakokineetilised: MyText
+  prekliinilised: MyText
+  abiained: MyText
+  sobimatus: MyText
+  kolblikkusaeg: MyText
+  sailitamine: MyText
+  pakendi_iseloomustus: MyText
+  havitamine: MyText
+  MYYGILOA_HOIDJA: MyText
+  MYYGILOA_NUMBER: MyText
+  MYYGILOA_KUUPAEV: MyText
+  TEKSTI_LABIVAATAMISE_KUUPAEV: MyText
+
+two:
+  toimeaine: MyString
+  atc: MyString
+  spc: MyString
+  RAVIMPREPARAADI_NIMETUS: MyText
+  KOOSTIS: MyText
+  RAVIMVORM: MyText
+  naidustused: MyText
+  annustamine: MyText
+  vastunaidustused: MyText
+  hoiatused: MyText
+  koostoimed: MyText
+  rasedus: MyText
+  reaktsioonikiirus: MyText
+  korvaltoimed: MyText
+  yleannustamine: MyText
+  farmakodynaamilised: MyText
+  farmakokineetilised: MyText
+  prekliinilised: MyText
+  abiained: MyText
+  sobimatus: MyText
+  kolblikkusaeg: MyText
+  sailitamine: MyText
+  pakendi_iseloomustus: MyText
+  havitamine: MyText
+  MYYGILOA_HOIDJA: MyText
+  MYYGILOA_NUMBER: MyText
+  MYYGILOA_KUUPAEV: MyText
+  TEKSTI_LABIVAATAMISE_KUUPAEV: MyText

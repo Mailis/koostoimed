@@ -1,0 +1,77 @@
+<h1>Listing omaduseds</h1>
+
+<table>
+  <tr>
+    <th>Toimeaine</th>
+    <th>Atc</th>
+    <th>Spc</th>
+    <th>Ravimpreparaadi nimetus</th>
+    <th>Koostis</th>
+    <th>Ravimvorm</th>
+    <th>Naidustused</th>
+    <th>Annustamine</th>
+    <th>Vastunaidustused</th>
+    <th>Hoiatused</th>
+    <th>Koostoimed</th>
+    <th>Rasedus</th>
+    <th>Reaktsioonikiirus</th>
+    <th>Korvaltoimed</th>
+    <th>Yleannustamine</th>
+    <th>Farmakodynaamilised</th>
+    <th>Farmakokineetilised</th>
+    <th>Prekliinilised</th>
+    <th>Abiained</th>
+    <th>Sobimatus</th>
+    <th>Kolblikkusaeg</th>
+    <th>Sailitamine</th>
+    <th>Pakendi iseloomustus</th>
+    <th>Havitamine</th>
+    <th>Myygiloa hoidja</th>
+    <th>Myygiloa number</th>
+    <th>Myygiloa kuupaev</th>
+    <th>Teksti labivaatamise kuupaev</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @omaduseds.each do |omadused| %>
+  <tr>
+    <td><%= omadused.toimeaine %></td>
+    <td><%= omadused.atc %></td>
+    <td><%= omadused.spc %></td>
+    <td><%= omadused.RAVIMPREPARAADI_NIMETUS %></td>
+    <td><%= omadused.KOOSTIS %></td>
+    <td><%= omadused.RAVIMVORM %></td>
+    <td><%= omadused.naidustused %></td>
+    <td><%= omadused.annustamine %></td>
+    <td><%= omadused.vastunaidustused %></td>
+    <td><%= omadused.hoiatused %></td>
+    <td><%= omadused.koostoimed %></td>
+    <td><%= omadused.rasedus %></td>
+    <td><%= omadused.reaktsioonikiirus %></td>
+    <td><%= omadused.korvaltoimed %></td>
+    <td><%= omadused.yleannustamine %></td>
+    <td><%= omadused.farmakodynaamilised %></td>
+    <td><%= omadused.farmakokineetilised %></td>
+    <td><%= omadused.prekliinilised %></td>
+    <td><%= omadused.abiained %></td>
+    <td><%= omadused.sobimatus %></td>
+    <td><%= omadused.kolblikkusaeg %></td>
+    <td><%= omadused.sailitamine %></td>
+    <td><%= omadused.pakendi_iseloomustus %></td>
+    <td><%= omadused.havitamine %></td>
+    <td><%= omadused.MYYGILOA_HOIDJA %></td>
+    <td><%= omadused.MYYGILOA_NUMBER %></td>
+    <td><%= omadused.MYYGILOA_KUUPAEV %></td>
+    <td><%= omadused.TEKSTI_LABIVAATAMISE_KUUPAEV %></td>
+    <!--<td><%= link_to 'Show', omadused %></td>-->
+    <!--<td><%= link_to 'Edit', edit_omadused_path(omadused) %></td>-->
+    <!--<td><%= link_to 'Destroy', omadused, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<!--<%= link_to 'New Omadused', new_omadused_path %>-->

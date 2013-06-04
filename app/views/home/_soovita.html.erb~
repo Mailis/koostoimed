@@ -1,0 +1,19 @@
+<table class="soovitabel">
+<% c=0 %>
+<% @soovitus.each do |s| %>  
+  <% if c%2 == 0 %>  
+    <tr class="esimene">
+      <td class="atcSoovitus_kood"><%= s.code %></td> 
+      <td class="atcSoovitus"><%= s.nimetus_est %></td> 
+      <td class="atcSoovitus"><%= s.nimetus_eng %></td>
+    <tr>
+  <% else %>  
+    <tr class="teine">
+      <td class="atcSoovitus_kood"><%= s.code %></td> 
+      <td class="atcSoovitus"><%= s.nimetus_est %></td> 
+      <td class="atcSoovitus"><%= s.nimetus_eng %></td>
+    <tr>
+  <% end %>
+  c += 1;
+<% end %>
+<table>

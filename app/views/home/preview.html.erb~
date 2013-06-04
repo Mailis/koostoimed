@@ -1,0 +1,14 @@
+<%=  
+ def omadu
+  
+    if params[:term]
+      like= "%".concat(params[:term].concat("%"))
+      omadu = Omadused.where("atc like ?", like)
+    else
+      omadu = Omadused.all
+    end
+    list = omadu.map {|u| Hash[ id: u.id, label: u.atc, name: u.atc]}
+    render json: list
+    
+  end
+%>
