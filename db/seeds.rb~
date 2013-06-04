@@ -55,19 +55,6 @@ Omadused.create(
 
 
 
-require 'getTable.rb'
-require 'readPdf.rb' 
-url = "http://193.40.10.165/register/register.php?otsi=J&keel=est&atc=A05A"
-gl = GetTable.new (url)
-gl.get_table
-
-gl.finalrows.each do |rowhash|
-  pedef = ReadPdf.new (rowhash)
-  pedef.read_pdf_in
-  pedef.hashimine
-  Omadused.create(pedef.hash_array)
-end 
-
 
 
 
