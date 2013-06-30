@@ -44,6 +44,7 @@ class Omadused < ActiveRecord::Base
     # Kui vastava koodiga Omadust ei leita tagastame nil'i, 
     # vastasel kujul Omadus klassi instantsi, millel on kõik viewdes kasutatav andmestik kaasas.
      @atc = atc
+     @toimeaine_info_baasist = []
      if pole_olemas?
        rendertext = atc + ": sellist toimeainet ei ole!"
      else
@@ -56,7 +57,6 @@ class Omadused < ActiveRecord::Base
        anna_urli_tabeli_read#siin tekib @finalrows ehk url-ist leitud tabeliread(toimeaine, atc ja spc link)
        if @finalrows.empty?#kui veebi-tulemus on tyhi
          rendertext = "Toimeaine \"" + @atc + "\" omadusi pole saadaval või on vaja täpsemat ATC koodi."
-         @toimeaine_info_baasist = []
        else
          #selle toimeaine kohta k2ivad read andmebaasist
          @toimeaine_info_baasist = Omadused.where("atc like ?", @atc.concat("%"))
@@ -145,6 +145,12 @@ class Omadused < ActiveRecord::Base
 #TEXT PROCESSING METHODS
   def process(text)
     textarray = text.split('. ') 
+    
+    result_array = []    
+    textarray.each do |str|
+      result_array.push (str + ". ") if str != ""
+    end
+    result_array
   end
   
   def processCapital(text)
