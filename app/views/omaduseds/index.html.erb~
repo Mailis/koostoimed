@@ -67,7 +67,7 @@
     <td><%= omadused.TEKSTI_LABIVAATAMISE_KUUPAEV %></td>
     <!--<td><%= link_to 'Show', omadused %></td>-->
     <!--<td><%= link_to 'Edit', edit_omadused_path(omadused) %></td>-->
-    <!--<td><%= link_to 'Destroy', omadused, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+    <td><%= link_to 'Destroy', omadused, method: :delete, data: { confirm: 'Are you sure?' } %></td><!---->
   </tr>
 <% end %>
 </table>
