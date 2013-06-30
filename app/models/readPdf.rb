@@ -26,7 +26,7 @@ TITLENUMBERS = ["1.", "2.", "3.", "4.", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6"
     @hash_array
   end
     
-private
+
   def pdf_files
     @pdf_file ||= "" #kas muutuja sisu või tyhi string
   end
@@ -40,9 +40,12 @@ private
       #eemalda lk numbrid, kui on
       #kui lehekylje neli viimast karakterit on digitid, siis ei eemalda: see voib olla aastaarv
       #kui lehekylje kõige viimane 1 karakter on digit, siis eemalda: see on vist lk nr
-      if !(pagetext =~ /\d{4}$/) && (pagetext =~ /\d{1}$/)
-         pagetext = pagetext[0..-2]
-      end      
+      lastChar = pagetext[-1,2].strip
+      if (lastChar.to_i > 0)
+        if (!(pagetext =~ /\d{4}$/))
+           pagetext = pagetext[0..-2]
+        end 
+      end  
       pdf_files.concat(pagetext  + "\n\n")# +\n\n: uus lehekylg v6ib alata uue peatykiga, peatykke splititakse kahe reavahetuse jargi
     end#all pages in one text 
   end#method
@@ -54,10 +57,11 @@ private
     #peaks andma ainult pealkirjad kõigist ridadest
     noFailHeaders = no_fail_headers(myPDFarray, TITLENUMBERS)
     #pane pealkirjad ja sisu hashi 
+    @hash_array[:TEKSTI_LABIVAATAMISE_KUUPAEV] = "test"
     key = ""
     myPDFarray.each do |line|
       if noFailHeaders.include? line
-         if line.start_with?("1.")
+         if (line.start_with?("1.") )
              key = :RAVIMPREPARAADI_NIMETUS 
          elsif line.start_with?("2.")
              key = :KOOSTIS
@@ -108,12 +112,21 @@ private
          else
              key = :TEKSTI_LABIVAATAMISE_KUUPAEV  if line.start_with?("10.")
          end
-        @hash_array[key] = ""
+         
+        @hash_array[key] = "" if ((key != ""))
       else
-        if (!(line.start_with?("4. ")) && !(line.start_with?("5. ")) && !(line.start_with?("6. ") ) )
-          @hash_array[key] += line.gsub(/\n/, " ") if !key.empty?
+        if key != ""
+          if (!(line.start_with?("4. ")) && !(line.start_with?("5. ")) && !(line.start_with?("6. ") ) )
+             if (@hash_array[:TEKSTI_LABIVAATAMISE_KUUPAEV] == "test")
+                @hash_array[key] += line.gsub(/\n/, " ") if !key.empty?
+             else
+                @hash_array[key] += line.gsub(/\n/, " ") if key == :TEKSTI_LABIVAATAMISE_KUUPAEV
+                break
+             end
+          end
         end
       end
+      
     end 
   end
   
@@ -137,5 +150,6 @@ private
   def looks_like_title?(str)
         str =~ /^\d{1,2}\.((\s|\w)|(\d{1,2}(\s|\w)))/ && !(str =~ /(^5\.\s)|(^4\.\s)|(^6\.\s)/)
   end
+  
    
 end#class

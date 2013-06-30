@@ -30,9 +30,9 @@
     <th>Myygiloa number</th>
     <th>Myygiloa kuupaev</th>
     <th>Teksti labivaatamise kuupaev</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <!--<th></th>-->
+    <!--<th></th>-->
+    <!--<th></th>-->
   </tr>
 
 <% @omaduseds.each do |omadused| %>

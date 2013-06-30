@@ -15,9 +15,11 @@ class OmadusedsController < ApplicationController
   # GET /omaduseds/1.json
   def kuva    
      toimeaine_query = Omadused.fetch((params[:atc]).gsub(/\s/, ""))
-     @omadused = toimeaine_query[:toimea]
+     
+     
      @error_info = toimeaine_query[:errror]
      @tabeliRidadeArv = toimeaine_query[:tabeliRidadeArv]
+     @omadused = toimeaine_query[:toimea]
      respond_to do |format|
        format.html
      end #render :partial => 'kuva', :content_type => 'text/html'

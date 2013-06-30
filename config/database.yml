@@ -19,9 +19,14 @@ test:
   timeout: 5000
 
 production:
-  adapter: mysql2
-  encoding: utf8
-  database: mailis_blog_production 
+  adapter: sqlite3
+  database: db/production.sqlite3
   pool: 5
-  username: mailis 
-  password: 7o9CnL9erd3DtgF2LFuj/A==
+  timeout: 5000
+  
+ # adapter: mysql2
+ # encoding: utf8
+ # database: mailis_blog_production 
+ # pool: 5
+ # username: mailis 
+ # password: 7o9CnL9erd3DtgF2LFuj/A==

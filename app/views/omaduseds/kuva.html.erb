@@ -27,7 +27,13 @@
         
         <div class = "koostoimed_container"> 
           <div class = "pdf_pealkiri"> <%= t.title(:koostoimed) %> </div>
-          <div class = "t_koostoimed"> <%= t.koostoimed %> </div>
+          <div class = "t_koostoimed"> 
+             <% textarray =  t.process(t.koostoimed) %> 
+             <% textarray.each do |splittedText| %> 
+                <%= splittedText %>
+                <br />
+             <% end %>
+          </div>
         </div>
         
         
@@ -50,27 +56,70 @@
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:naidustused) %> </div>
-            <div class = "muu"> <%= t[:naidustused] %> </div>
+            <div class = "muu">
+               <% textarray =  t.process(t[:naidustused]) %> 
+               <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+               <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:annustamine) %> </div>
-            <div class = "muu"> <%= t[:annustamine] %> </div>
+            <div class = "muu">  
+            <% textarray =  t.processCapital(t[:annustamine]) %> 
+             <% textarray.each do |splittedText| %> 
+                <% if (splittedText[-1,1] == ":") %>
+                   <b><%= splittedText %></b>
+                   <br />
+                <% else %>
+                   <%= splittedText %>
+                   <br />
+                <% end %>
+             <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:vastunaidustused) %> </div>
-            <div class = "muu"> <%= t[:vastunaidustused] %> </div>
+            <div class = "muu"> 
+              <% textarray = t.processKriipsTaht(t[:vastunaidustused]) %> 
+              <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+              <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:hoiatused) %> </div>
-            <div class = "muu"> <%= t[:hoiatused] %> </div>
+            <div class = "muu">
+               <% textarray =  t.process(t[:hoiatused]) %> 
+               <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+               <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:rasedus) %> </div>
-            <div class = "muu"> <%= t[:rasedus] %> </div>
+            <div class = "muu"> 
+               <% textarray =  t.process(t[:rasedus]) %> 
+               <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+               <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
@@ -90,17 +139,39 @@
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:farmakodynaamilised) %> </div>
-            <div class = "muu"> <%= t[:farmakodynaamilised] %> </div>
+            <div class = "muu"> 
+               <% textarray =  t.process(t[:farmakodynaamilised]) %> 
+               <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+               <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:farmakokineetilised) %> </div>
-            <div class = "muu"> <%= t[:farmakokineetilised] %> </div>
+            <div class = "muu"> 
+               <% textarray =  t.process(t[:farmakokineetilised]) %> 
+               <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+               <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:prekliinilised) %> </div>
-            <div class = "muu"> <%= t[:prekliinilised] %> </div>
+            <div class = "muu"> 
+               <% textarray =  t.processsulud(t[:prekliinilised]) %> 
+               <% textarray.each do |splittedText| %> 
+                   <%= splittedText %>
+                   <br />
+              <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 

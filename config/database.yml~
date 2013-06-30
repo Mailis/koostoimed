@@ -21,7 +21,7 @@ test:
 production:
   adapter: mysql2
   encoding: utf8
-  database: ravimid
+  database: mailis_blog_production 
   pool: 5
   username: mailis 
   password: 7o9CnL9erd3DtgF2LFuj/A==

@@ -56,54 +56,21 @@ class Omadused < ActiveRecord::Base
        anna_urli_tabeli_read#siin tekib @finalrows ehk url-ist leitud tabeliread(toimeaine, atc ja spc link)
        if @finalrows.empty?#kui veebi-tulemus on tyhi
          rendertext = "Toimeaine \"" + @atc + "\" omadusi pole saadaval või on vaja täpsemat ATC koodi."
-         @toimeaine_info_baasist = []
        else
          #selle toimeaine kohta k2ivad read andmebaasist
-         @toimeaine_info_baasist = Omadused.where("atc like ?", @atc.concat("%"))
-         toimeaine_info_veebist = anna_pdf_info_veebist
-         
-         # spc lingid baasist (v6rdlemiseks)
-         spc_links_baasist = []
-         @toimeaine_info_baasist.each do |baasilink|
-           spc_links_baasist.push baasilink.spc
+         @toimeaine_info = Omadused.where("atc like ?", @atc.concat("%"))
+       
+         if @toimeaine_info.empty?
+           #kui andmebaasis ei ole, siis vota pdf-st ja salvesta ka baasi
+           lisa_uus_omadus
+         else
+           #kui andmebaasis on, siis peab v6rdlema
+           vordle_db_tabeli_kuupaevaga
          end
-         
-         kasM6ndaRidaUuendati = 0
-         
-         toimeaine_info_veebist.each do |veebitem|
-           spc_link_veebist = veebitem[:spc]           
-           
-           #kui baasis ei ole sellist spc-linki, siis lisada uus rida
-           if !(spc_links_baasist.include? spc_link_veebist)
-           begin
-             Omadused.create(veebitem)
-           rescue Exception=>e
-              rendertext =  e
-           end
-             
-             kasM6ndaRidaUuendati = 1
-           else
-             #sama link on baasis olemas, vaata kas kuupaev on uuenenud
-             veebi_kuupaev = veebitem[:TEKSTI_LABIVAATAMISE_KUUPAEV]
-             @toimeaine_info_baasist.each do |baasi_rida|
-                if (baasi_rida.spc == spc_link_veebist)#kontrolli yhte kindlat rida
-                  if ( veebi_kuupaev != baasi_rida.TEKSTI_LABIVAATAMISE_KUUPAEV)
-                    #kuupaevad on erinevad, vaja update-da
-                    baasi_rida.update_attributes(veebitem)
-                    kasM6ndaRidaUuendati = 1
-                  end
-                end
-             end
-           end
-         end
-         
        end 
-       if(kasM6ndaRidaUuendati == 1)
-           #varskendatud info baasist
-           @toimeaine_info_baasist = Omadused.where("atc like ?", @atc.concat("%") ).order(:atc)
-       end
+         @toimeaine_info = Omadused.where("atc like ?", @atc.concat("%") ).order(:atc)
      end 
-         {:toimea => @toimeaine_info_baasist, :tabeliRidadeArv => @toimeaine_info_baasist.length, :errror => rendertext}
+         {:toimea => @toimeaine_info, :tabeliRidadeArv => @finalrows.length, :errror => rendertext}
   end
   
   
@@ -113,14 +80,77 @@ class Omadused < ActiveRecord::Base
     require 'getTable.rb'
     require 'readPdf.rb'  
   end
- 
+  
+  #lisa ravimite omaduste tabelisse uued andmed
+  def self.lisa_uus_omadus    
+    @finalrows.each do |rowhash|
+      Omadused.create(ReadPdf.new(rowhash).data)#sulgudes tekib pdf-failist hash(, millest tekitatakse uus omadus)
+    end 
+  end
+
   #kas selline atc kood eksisteerib?
   def self.pole_olemas?
     olu = Atc.where("code = ?", @atc).first
     @atc.empty? || olu.nil?
   end 
   
-
+  
+   def self.vordle_db_tabeli_kuupaevaga
+      #kui andmebaasi tabelivastus ei ole tühi, on vaja v6rrelda kuupaevi
+      #kuupaev andmebaasi tabelist
+      #tabelirea id ja kuupaev
+      #võrdlemiseks on vaja *toimeaine atc koodi, *toimeaine nimetust, *ravimpreparaadi nimetust, *spc linki
+      anna_pdf_info_veebist#siin tekib massiiv @pdf_arr_vordlemiseks, kus on veebist leitud padf-ide hashid(key=pealk, value=sisu)
+      #v6rdle @pdf_arr_vordlemiseks ja @toimeaine_info (andmebaasist)      
+      #PLAAN
+      #leia vordsed
+      #vordle nende kuupaevi
+       # kui erinevad, siis update
+      #vordle vordseid pdf-arrayga(seal v6ib olla uusi pdf-dokumente)
+       # kui leidub uusi, siis lisa baasi
+      kuupaeva_vordlemiseks_vordseid = []
+      @pdf_arr_vordlemiseks = @pdf_arr_vordlemiseks.to_a
+      if (@pdf_arr_vordlemiseks.count > 0)
+        @toimeaine_info.each do |item_baasist|
+           @item_baasist = item_baasist
+           @pdf_arr_vordlemiseks.each do |item_veebist|
+             if vrdl? item_veebist
+               kuupaeva_vordlemiseks_vordseid.push item_veebist
+             end
+           end#@pdf_arr items
+        end#@toimeaine_arr items
+       
+        #vordle kuupaevi: kui on erinevad, update
+        if(!kuupaeva_vordlemiseks_vordseid.empty?)
+          @toimeaine_info.each do |item_baasist|
+            @item_baasist = item_baasist
+            kuupaeva_vordlemiseks_vordseid.each do |vordle|
+              if vrdl?  vordle
+                if item_baasist[:TEKSTI_LABIVAATAMISE_KUUPAEV] != vordle[:TEKSTI_LABIVAATAMISE_KUUPAEV]
+                  item_baasist.update_attributes(vordle)
+                end
+              end
+            end
+          end
+        end
+           
+        #vordle pdf-array-ga: seal võib olla uusi
+        @uued = []
+        if(kuupaeva_vordlemiseks_vordseid.count != @pdf_arr_vordlemiseks.count)
+           @uued = @pdf_arr_vordlemiseks.select{|s| !kuupaeva_vordlemiseks_vordseid.include? s}
+        end
+        
+        if @uued.count > 0
+          @uued.each do |uus|
+            Omadused.create(uus)
+          end
+        end
+           
+      end#if not empty
+        #render :text => testresp + kuupaeva_vordlemiseks_vordseid.count.to_s + " uued: " + @uued.count.to_s 
+  end
+  
+  
   
   def self.anna_urli_tabeli_read
     gl = GetTable.new (@queryurl)
@@ -131,6 +161,13 @@ class Omadused < ActiveRecord::Base
     @finalrows=gl.finalrows#read veebilehe tabelist, kus on SPC-lingid, igal real on ATC, toimeaine lad. keeles ja SPC-link PDF-dokumendile
   end
     
+ 
+  
+  def self.vrdl? item_veebist
+       (@item_baasist[:atc]==item_veebist[:atc]) && 
+       (@item_baasist[:toimeaine]==item_veebist[:toimeaine])  &&
+       (@item_baasist[:spc]==item_veebist[:spc])
+  end
 
   
   def self.anna_pdf_info_veebist
@@ -140,63 +177,6 @@ class Omadused < ActiveRecord::Base
     end 
     @pdf_arr_vordlemiseks
   end
-
-
-#TEXT PROCESSING METHODS
-  def process(text)
-    textarray = text.split('. ') 
-  end
   
-  def processCapital(text)
-    textarray = text.split(/([A-Z]{1}+)|(Õ+)|(Ä+)|(Ö+)|(Ü+)/)
-    
-    result_array = []
-    if(textarray[0] == "")
-      textarray.each_with_index {|item, index|
-      
-         if (index.odd?)
-           next_element = textarray[index+1]
-           result_array.push (item + next_element)
-         end
-      }
- 
-    else
-      textarray.each_with_index {|item, index|
-         if (index.even?)
-            if (index+1 < textarray.length)
-              next_element = textarray[index+1]
-              result_array.push (item + next_element)
-            end
-         end
-      }
-    end
-    result_array
-  end
-  
-  def processsulud(text)
-    textarray = text.split(/(\s[a-z]{1}\))/)    
-    result_array = []   
-    
-      textarray.each_with_index {|item, index|  
-         next_element = textarray[index+1]    
-         if (item.length < 4)
-             result_array.push (item + next_element + textarray[index+1])
-         else
-           result_array.push item if index == 0
-         end
-      }
-    result_array
-  end
-  
-    
-  def processKriipsTaht(text)
-    textarray = text.split("-")  
-    result_array = []    
-    textarray.each do |str|
-      result_array.push "-" + str if str != ""
-    end
-    result_array
-  end
-
   
 end
