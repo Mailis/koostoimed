@@ -23,8 +23,8 @@ production:
   encoding: utf8
   database: ravimid
   pool: 5
-  username: esnomed 
-  password: cSYDewJBhK42fudD
+  username: ravimid
+  password: vBvZy84DPvYh9sJ5
   
 #  adapter: sqlite3
 #  database: db/production.sqlite3

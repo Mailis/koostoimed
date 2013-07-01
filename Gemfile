@@ -9,7 +9,7 @@ gem 'rails', '3.2.13'
 gem 'sqlite3'
 
 gem 'thin'
-gem 'mysql2'
+gem 'mysql2' e
 gem 'therubyracer'
 
 gem 'nokogiri' 
