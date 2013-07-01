@@ -18,15 +18,15 @@ test:
   pool: 5
   timeout: 5000
 
-production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+production:  
+  adapter: mysql2
+  encoding: utf8
+  database: ravimid
   pool: 5
-  timeout: 5000
+  username: ravimid
+  password: vBvZy84DPvYh9sJ5
   
- # adapter: mysql2
- # encoding: utf8
- # database: mailis_blog_production 
- # pool: 5
- # username: mailis 
- # password: 7o9CnL9erd3DtgF2LFuj/A==
+#  adapter: sqlite3
+#  database: db/production.sqlite3
+#  pool: 5
+#  timeout: 5000

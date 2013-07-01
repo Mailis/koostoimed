@@ -16,3 +16,5 @@
 
 #seeds-file
 /db/seeds.rb
+
+#/config/database.yml

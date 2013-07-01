@@ -148,7 +148,7 @@ class Omadused < ActiveRecord::Base
     
     result_array = []    
     textarray.each do |str|
-      result_array.push (str + ". ") if str != ""
+      result_array.push (str.strip! + ". ") if str != ""
     end
     result_array
   end
