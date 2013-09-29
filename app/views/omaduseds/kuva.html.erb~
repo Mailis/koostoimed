@@ -56,7 +56,15 @@
           
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:naidustused) %> </div>
-            <div class = "muu"> <%= t[:naidustused] %> </div>
+            <div class = "muu">
+               <% textarray =  t.process(t[:naidustused]) %> 
+               <% textarray.each do |splittedText| %> 
+                  <% if (splittedText != "") %>
+                     <%= splittedText %>
+                     <br />
+                  <% end %>
+               <% end %>
+            </div>
           </div>
           
           <div class = "eitea" > 
@@ -158,11 +166,12 @@
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:prekliinilised) %> </div>
             <div class = "muu"> 
-               <% textarray =  t.processsulud(t[:prekliinilised]) %> 
-               <% textarray.each do |splittedText| %> 
-                   <%= splittedText %>
-                   <br />
-              <% end %>
+               <%= t[:prekliinilised] %>
+               #<% textarray =  t.processsulud(t[:prekliinilised]) %> 
+               #<% textarray.each do |splittedText| %> 
+               #    <%= splittedText %>
+               #    <br />
+               #<% end %>
             </div>
           </div>
           

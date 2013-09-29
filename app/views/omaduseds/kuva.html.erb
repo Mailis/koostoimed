@@ -166,11 +166,8 @@
           <div class = "eitea" > 
             <div class = "pdf_pealkiri" > <%= t.title(:prekliinilised) %> </div>
             <div class = "muu"> 
-               <% textarray =  t.processsulud(t[:prekliinilised]) %> 
-               <% textarray.each do |splittedText| %> 
-                   <%= splittedText %>
-                   <br />
-              <% end %>
+               <%= t[:prekliinilised] %>
+              
             </div>
           </div>
           
