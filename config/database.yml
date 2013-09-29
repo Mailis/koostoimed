@@ -1,6 +1,7 @@
 development:
   adapter: postgresql
   encoding: unicode
+  host: localhost
   database: koostoime_development
   pool: 5
   username: koostoime
@@ -8,6 +9,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
+  host: localhost
   database: koostoime_test
   pool: 5
   username: koostoime
@@ -15,7 +17,12 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
+  host: localhost
   database: koostoime_production
   pool: 5
   username: koostoime
   password: ohJummel  
+  
+  
+  username: mailis #koostoime
+  password: maika #ohJummel 
