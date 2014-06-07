@@ -1,4 +1,0 @@
-<p>
-  <b>Atc:</b>
-  <%= @omadused.atc %>
-</p>
